@@ -1,0 +1,46 @@
+# Node modules (will be installed in container)
+node_modules
+npm-debug.log
+package-lock.json
+
+# Environment files (should not be in image)
+.env
+.env.*
+!.env.example
+
+# Git files
+.git
+.gitignore
+
+# Documentation (optional, can remove if you want docs in image)
+README.md
+QUICKSTART.md
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs
+
+# Test files
+*.test.js
+test/
+tests/
+__tests__/
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Docker files (no need to copy these into image)
+Dockerfile
+docker-compose.yml
+.dockerignore
