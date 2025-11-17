@@ -162,7 +162,7 @@ docker inspect --format='{{json .State.Health}}' prodamus-api-wrapper | jq
 
 | Параметр | Тип | Описание |
 |----------|-----|----------|
-| `prodamusUrl` | string | URL домена Prodamus (например: `"https://smartunity.payform.ru"`) |
+| `prodamusUrl` | string | URL домена Prodamus (например: `"https://example.payform.ru"`) |
 | `secretKey` | string | Секретный ключ для подписи запросов |
 | `subscription` | string | ID подписки |
 
@@ -170,7 +170,7 @@ docker inspect --format='{{json .State.Health}}' prodamus-api-wrapper | jq
 
 Все endpoints, требующие идентификацию клиента, поддерживают два типа идентификаторов:
 
-- **`phone`** - Номер телефона в формате `+79119985268`
+- **`phone`** - Номер телефона в формате `+79001234567`
 - **`email`** - Email адрес клиента
 
 **Важно:** Передайте либо `phone`, либо `email`, но не оба одновременно.
@@ -190,7 +190,7 @@ docker inspect --format='{{json .State.Health}}' prodamus-api-wrapper | jq
 | `prodamusUrl` | string | Да | URL Prodamus домена |
 | `secretKey` | string | Да | Секретный ключ |
 | `subscription` | string | Да | ID подписки |
-| `phone` | string | Нет* | Телефон клиента (формат: +79119985268) |
+| `phone` | string | Нет* | Телефон клиента (формат: +79001234567) |
 | `email` | string | Нет* | Email клиента |
 | `isActive` | boolean | Да | `true` для активации, `false` для деактивации |
 
@@ -202,10 +202,10 @@ docker inspect --format='{{json .State.Health}}' prodamus-api-wrapper | jq
 curl -X POST http://localhost:3001/setActivity \
   -H "Content-Type: application/json" \
   -d '{
-    "prodamusUrl": "https://smartunity.payform.ru",
+    "prodamusUrl": "https://example.payform.ru",
     "secretKey": "your_secret_key",
-    "subscription": "2428120",
-    "phone": "+79119985268",
+    "subscription": "123456",
+    "phone": "+79001234567",
     "isActive": false
   }'
 ```
@@ -216,9 +216,9 @@ curl -X POST http://localhost:3001/setActivity \
 curl -X POST http://localhost:3001/setActivity \
   -H "Content-Type: application/json" \
   -d '{
-    "prodamusUrl": "https://smartunity.payform.ru",
+    "prodamusUrl": "https://example.payform.ru",
     "secretKey": "your_secret_key",
-    "subscription": "2428120",
+    "subscription": "123456",
     "email": "user@example.com",
     "isActive": true
   }'
@@ -232,11 +232,11 @@ curl -X POST http://localhost:3001/setActivity \
   "message": "Subscription deactivated successfully",
   "data": {
     "status": "ok",
-    "subscription_id": "2428120"
+    "subscription_id": "123456"
   },
   "request": {
-    "subscription": "2428120",
-    "identifier": "+79119985268",
+    "subscription": "123456",
+    "identifier": "+79001234567",
     "identifierType": "phone",
     "isActive": false
   }
@@ -251,10 +251,10 @@ curl -X POST http://localhost:3001/setActivity \
   "error": "Missing required parameters",
   "missing": ["phone or email"],
   "example": {
-    "prodamusUrl": "https://smartunity.payform.ru",
+    "prodamusUrl": "https://example.payform.ru",
     "secretKey": "your_secret_key",
-    "subscription": "2428120",
-    "phone": "+79119985268",
+    "subscription": "123456",
+    "phone": "+79001234567",
     "email": "user@example.com",
     "isActive": false
   }
@@ -284,9 +284,9 @@ curl -X POST http://localhost:3001/setActivity \
 curl -X POST http://localhost:3001/setSubscriptionDiscount \
   -H "Content-Type: application/json" \
   -d '{
-    "prodamusUrl": "https://smartunity.payform.ru",
+    "prodamusUrl": "https://example.payform.ru",
     "secretKey": "your_secret_key",
-    "subscription": "2428120",
+    "subscription": "123456",
     "discount": 25
   }'
 ```
@@ -299,11 +299,11 @@ curl -X POST http://localhost:3001/setSubscriptionDiscount \
   "message": "Subscription discount updated successfully",
   "data": {
     "status": "ok",
-    "subscription_id": "2428120",
+    "subscription_id": "123456",
     "discount": 25
   },
   "request": {
-    "subscription": "2428120",
+    "subscription": "123456",
     "discount": 25
   }
 }
@@ -334,7 +334,7 @@ curl -X POST http://localhost:3001/setSubscriptionDiscount \
 | `secretKey` | string | Да | Секретный ключ |
 | `subscription` | string | Да | ID подписки |
 | `date` | string | Да | Дата следующего платежа (формат: `"YYYY-MM-DD HH:MM"`) |
-| `phone` | string | Нет* | Телефон клиента (формат: +79119985268) |
+| `phone` | string | Нет* | Телефон клиента (формат: +79001234567) |
 | `email` | string | Нет* | Email клиента |
 
 \* Обязателен один из параметров: `phone` или `email`
@@ -351,11 +351,11 @@ curl -X POST http://localhost:3001/setSubscriptionDiscount \
 curl -X POST http://localhost:3001/setSubscriptionPaymentDate \
   -H "Content-Type: application/json" \
   -d '{
-    "prodamusUrl": "https://smartunity.payform.ru",
+    "prodamusUrl": "https://example.payform.ru",
     "secretKey": "your_secret_key",
-    "subscription": "2428120",
+    "subscription": "123456",
     "date": "2025-12-31 23:59",
-    "phone": "+79119985268"
+    "phone": "+79001234567"
   }'
 ```
 
@@ -365,9 +365,9 @@ curl -X POST http://localhost:3001/setSubscriptionPaymentDate \
 curl -X POST http://localhost:3001/setSubscriptionPaymentDate \
   -H "Content-Type: application/json" \
   -d '{
-    "prodamusUrl": "https://smartunity.payform.ru",
+    "prodamusUrl": "https://example.payform.ru",
     "secretKey": "your_secret_key",
-    "subscription": "2428120",
+    "subscription": "123456",
     "date": "2025-12-31 23:59",
     "email": "user@example.com"
   }'
@@ -381,13 +381,13 @@ curl -X POST http://localhost:3001/setSubscriptionPaymentDate \
   "message": "Subscription payment date updated successfully",
   "data": {
     "status": "ok",
-    "subscription_id": "2428120",
+    "subscription_id": "123456",
     "next_payment_date": "2025-12-31 23:59"
   },
   "request": {
-    "subscription": "2428120",
+    "subscription": "123456",
     "newDate": "2025-12-31 23:59",
-    "identifier": "+79119985268",
+    "identifier": "+79001234567",
     "identifierType": "phone"
   }
 }
@@ -427,10 +427,10 @@ const API_URL = 'http://localhost:3001';
 async function deactivateSubscription() {
   try {
     const response = await axios.post(`${API_URL}/setActivity`, {
-      prodamusUrl: 'https://smartunity.payform.ru',
+      prodamusUrl: 'https://example.payform.ru',
       secretKey: 'your_secret_key',
-      subscription: '2428120',
-      phone: '+79119985268',
+      subscription: '123456',
+      phone: '+79001234567',
       isActive: false
     });
 
@@ -444,9 +444,9 @@ async function deactivateSubscription() {
 async function setDiscount() {
   try {
     const response = await axios.post(`${API_URL}/setSubscriptionDiscount`, {
-      prodamusUrl: 'https://smartunity.payform.ru',
+      prodamusUrl: 'https://example.payform.ru',
       secretKey: 'your_secret_key',
-      subscription: '2428120',
+      subscription: '123456',
       discount: 30
     });
 
@@ -460,9 +460,9 @@ async function setDiscount() {
 async function setPaymentDate() {
   try {
     const response = await axios.post(`${API_URL}/setSubscriptionPaymentDate`, {
-      prodamusUrl: 'https://smartunity.payform.ru',
+      prodamusUrl: 'https://example.payform.ru',
       secretKey: 'your_secret_key',
-      subscription: '2428120',
+      subscription: '123456',
       date: '2025-12-31 23:59',
       email: 'user@example.com'
     });
@@ -484,10 +484,10 @@ API_URL = 'http://localhost:3001'
 # Деактивация подписки
 def deactivate_subscription():
     response = requests.post(f'{API_URL}/setActivity', json={
-        'prodamusUrl': 'https://smartunity.payform.ru',
+        'prodamusUrl': 'https://example.payform.ru',
         'secretKey': 'your_secret_key',
-        'subscription': '2428120',
-        'phone': '+79119985268',
+        'subscription': '123456',
+        'phone': '+79001234567',
         'isActive': False
     })
 
@@ -499,9 +499,9 @@ def deactivate_subscription():
 # Установка скидки
 def set_discount():
     response = requests.post(f'{API_URL}/setSubscriptionDiscount', json={
-        'prodamusUrl': 'https://smartunity.payform.ru',
+        'prodamusUrl': 'https://example.payform.ru',
         'secretKey': 'your_secret_key',
-        'subscription': '2428120',
+        'subscription': '123456',
         'discount': 30
     })
 
@@ -513,9 +513,9 @@ def set_discount():
 # Установка даты платежа
 def set_payment_date():
     response = requests.post(f'{API_URL}/setSubscriptionPaymentDate', json={
-        'prodamusUrl': 'https://smartunity.payform.ru',
+        'prodamusUrl': 'https://example.payform.ru',
         'secretKey': 'your_secret_key',
-        'subscription': '2428120',
+        'subscription': '123456',
         'date': '2025-12-31 23:59',
         'email': 'user@example.com'
     })
@@ -538,10 +538,10 @@ function deactivateSubscription() {
     global $apiUrl;
 
     $data = [
-        'prodamusUrl' => 'https://smartunity.payform.ru',
+        'prodamusUrl' => 'https://example.payform.ru',
         'secretKey' => 'your_secret_key',
-        'subscription' => '2428120',
-        'phone' => '+79119985268',
+        'subscription' => '123456',
+        'phone' => '+79001234567',
         'isActive' => false
     ];
 
@@ -562,9 +562,9 @@ function setDiscount() {
     global $apiUrl;
 
     $data = [
-        'prodamusUrl' => 'https://smartunity.payform.ru',
+        'prodamusUrl' => 'https://example.payform.ru',
         'secretKey' => 'your_secret_key',
-        'subscription' => '2428120',
+        'subscription' => '123456',
         'discount' => 30
     ];
 
@@ -585,9 +585,9 @@ function setPaymentDate() {
     global $apiUrl;
 
     $data = [
-        'prodamusUrl' => 'https://smartunity.payform.ru',
+        'prodamusUrl' => 'https://example.payform.ru',
         'secretKey' => 'your_secret_key',
-        'subscription' => '2428120',
+        'subscription' => '123456',
         'date' => '2025-12-31 23:59',
         'email' => 'user@example.com'
     ];
@@ -624,27 +624,27 @@ function setPaymentDate() {
 const crypto = require('crypto');
 
 const data = {
-  subscription: "2428120",
+  subscription: "123456",
   active_user: "0",
-  customer_phone: "+79119985268"
+  customer_phone: "+79001234567"
 };
 
 // Шаг 1: Конвертация в строки
 const processedData = {
-  subscription: "2428120",
+  subscription: "123456",
   active_user: "0",
-  customer_phone: "+79119985268"
+  customer_phone: "+79001234567"
 };
 
 // Шаг 2: Сортировка ключей
 const sortedData = {
   active_user: "0",
-  customer_phone: "+79119985268",
-  subscription: "2428120"
+  customer_phone: "+79001234567",
+  subscription: "123456"
 };
 
 // Шаг 3: JSON строка
-const jsonString = '{"active_user":"0","customer_phone":"+79119985268","subscription":"2428120"}';
+const jsonString = '{"active_user":"0","customer_phone":"+79001234567","subscription":"123456"}';
 
 // Шаг 4: HMAC SHA-256
 const signature = crypto
@@ -748,11 +748,11 @@ const signature = crypto
 Пример лога:
 ```
 [2025-11-17T10:30:45.123Z] POST /setActivity - 200 - 245ms
-[Signature] Data: { active_user: '0', customer_phone: '+79119985268', subscription: '2428120' }
-[Signature] JSON string: {"active_user":"0","customer_phone":"+79119985268","subscription":"2428120"}
+[Signature] Data: { active_user: '0', customer_phone: '+79001234567', subscription: '123456' }
+[Signature] JSON string: {"active_user":"0","customer_phone":"+79001234567","subscription":"123456"}
 [Signature] Generated: a1b2c3d4e5f6...
-[API Request] URL: https://smartunity.payform.ru/rest/setActivity/
-[API Response]: { status: 'ok', subscription_id: '2428120' }
+[API Request] URL: https://example.payform.ru/rest/setActivity/
+[API Response]: { status: 'ok', subscription_id: '123456' }
 ```
 
 ---
@@ -839,9 +839,9 @@ Health check endpoint
 
 ## FAQ
 
-### В чем отличие от основного проекта club_pay?
+### Почему только три метода?
 
-Основной проект содержит множество методов и функций (замена карт, смена тарифов, вебхуки и т.д.). Этот wrapper предоставляет только 3 базовых метода управления подписками с упрощенным интерфейсом.
+Этот wrapper создан как упрощенная обертка для базовых операций с подписками Prodamus. Он фокусируется на трех наиболее используемых методах с простым и понятным интерфейсом. Для более сложных сценариев (замена карт, создание платежных ссылок, вебхуки) можно расширить функциональность.
 
 ### Нужно ли указывать фиксированный домен Prodamus?
 
@@ -857,7 +857,7 @@ API вернет ошибку 400 с сообщением "Date cannot be in the
 
 ### Поддерживается ли другие идентификаторы кроме phone и email?
 
-Текущая версия поддерживает только `phone` и `email`. Для расширенных идентификаторов (tg_user_id, vk_user_id, profile) используйте основной проект club_pay.
+Текущая версия поддерживает только `phone` и `email` для упрощения API. Если вам нужны дополнительные идентификаторы (tg_user_id, vk_user_id, profile), вы можете легко расширить сервис `src/services/prodamus.js`, добавив соответствующие параметры по аналогии с существующими методами.
 
 ---
 

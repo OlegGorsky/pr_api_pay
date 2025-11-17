@@ -39,10 +39,10 @@ router.post('/setActivity', async (req, res) => {
         error: 'Missing required parameters',
         missing: missingParams,
         example: {
-          prodamusUrl: 'https://smartunity.payform.ru',
+          prodamusUrl: 'https://example.payform.ru',
           secretKey: 'your_secret_key',
-          subscription: '2428120',
-          phone: '+79119985268',
+          subscription: '123456',
+          phone: '+79001234567',
           // OR
           email: 'user@example.com',
           isActive: false
@@ -122,9 +122,9 @@ router.post('/setSubscriptionDiscount', async (req, res) => {
         error: 'Missing required parameters',
         missing: missingParams,
         example: {
-          prodamusUrl: 'https://smartunity.payform.ru',
+          prodamusUrl: 'https://example.payform.ru',
           secretKey: 'your_secret_key',
-          subscription: '2428120',
+          subscription: '123456',
           discount: 25
         }
       });
@@ -203,11 +203,11 @@ router.post('/setSubscriptionPaymentDate', async (req, res) => {
         error: 'Missing required parameters',
         missing: missingParams,
         example: {
-          prodamusUrl: 'https://smartunity.payform.ru',
+          prodamusUrl: 'https://example.payform.ru',
           secretKey: 'your_secret_key',
-          subscription: '2428120',
+          subscription: '123456',
           date: '2025-12-31 23:59',
-          phone: '+79119985268',
+          phone: '+79001234567',
           // OR
           email: 'user@example.com'
         }

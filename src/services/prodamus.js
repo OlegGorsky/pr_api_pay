@@ -47,7 +47,7 @@ class ProdamusService {
   /**
    * Makes a POST request to Prodamus API
    *
-   * @param {string} prodamusUrl - Prodamus domain URL (e.g., "https://smartunity.payform.ru")
+   * @param {string} prodamusUrl - Prodamus domain URL (e.g., "https://example.payform.ru")
    * @param {string} endpoint - API endpoint name (e.g., "setActivity")
    * @param {Object} params - Request parameters
    * @param {string} secretKey - Secret key for signing
