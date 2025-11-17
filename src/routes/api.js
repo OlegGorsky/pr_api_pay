@@ -10,8 +10,9 @@ const router = express.Router();
  * - prodamusUrl: string (required) - Prodamus domain URL
  * - secretKey: string (required) - Secret key for API
  * - subscription: string (required) - Subscription ID
- * - phone: string (optional) - Customer phone (required if email not provided)
- * - email: string (optional) - Customer email (required if phone not provided)
+ * - phone: string (optional) - Customer phone (required if email/profile not provided)
+ * - email: string (optional) - Customer email (required if phone/profile not provided)
+ * - profile: string (optional) - Profile ID (required if phone/email not provided)
  * - isActive: boolean (required) - true to activate, false to deactivate
  */
 router.post('/setActivity', async (req, res) => {
@@ -22,6 +23,7 @@ router.post('/setActivity', async (req, res) => {
       subscription,
       phone,
       email,
+      profile,
       isActive
     } = req.body;
 
@@ -30,7 +32,7 @@ router.post('/setActivity', async (req, res) => {
     if (!prodamusUrl) missingParams.push('prodamusUrl');
     if (!secretKey) missingParams.push('secretKey');
     if (!subscription) missingParams.push('subscription');
-    if (!phone && !email) missingParams.push('phone or email');
+    if (!phone && !email && !profile) missingParams.push('phone, email, or profile');
     if (isActive === undefined) missingParams.push('isActive');
 
     if (missingParams.length > 0) {
@@ -45,16 +47,19 @@ router.post('/setActivity', async (req, res) => {
           phone: '+79001234567',
           // OR
           email: 'user@example.com',
+          // OR
+          profile: 'user_profile_id',
           isActive: false
         }
       });
     }
 
     // Validate that only one identifier is provided
-    if (phone && email) {
+    const identifiersCount = [phone, email, profile].filter(Boolean).length;
+    if (identifiersCount > 1) {
       return res.status(400).json({
         success: false,
-        error: 'Provide either phone or email, not both'
+        error: 'Provide only one identifier: phone, email, or profile'
       });
     }
 
@@ -65,8 +70,20 @@ router.post('/setActivity', async (req, res) => {
       subscription,
       phone,
       email,
+      profile,
       isActive
     });
+
+    // Determine identifier type
+    let identifierType = 'phone';
+    let identifier = phone;
+    if (email) {
+      identifierType = 'email';
+      identifier = email;
+    } else if (profile) {
+      identifierType = 'profile';
+      identifier = profile;
+    }
 
     res.json({
       success: true,
@@ -74,8 +91,8 @@ router.post('/setActivity', async (req, res) => {
       data: result,
       request: {
         subscription,
-        identifier: phone || email,
-        identifierType: phone ? 'phone' : 'email',
+        identifier: identifier,
+        identifierType: identifierType,
         isActive
       }
     });
@@ -175,8 +192,9 @@ router.post('/setSubscriptionDiscount', async (req, res) => {
  * - secretKey: string (required) - Secret key for API
  * - subscription: string (required) - Subscription ID
  * - date: string (required) - New payment date in format "YYYY-MM-DD HH:MM"
- * - phone: string (optional) - Customer phone (required if email not provided)
- * - email: string (optional) - Customer email (required if phone not provided)
+ * - phone: string (optional) - Customer phone (required if email/profile not provided)
+ * - email: string (optional) - Customer email (required if phone/profile not provided)
+ * - profile: string (optional) - Profile ID (required if phone/email not provided)
  */
 router.post('/setSubscriptionPaymentDate', async (req, res) => {
   try {
@@ -186,7 +204,8 @@ router.post('/setSubscriptionPaymentDate', async (req, res) => {
       subscription,
       date,
       phone,
-      email
+      email,
+      profile
     } = req.body;
 
     // Validate required parameters
@@ -195,7 +214,7 @@ router.post('/setSubscriptionPaymentDate', async (req, res) => {
     if (!secretKey) missingParams.push('secretKey');
     if (!subscription) missingParams.push('subscription');
     if (!date) missingParams.push('date');
-    if (!phone && !email) missingParams.push('phone or email');
+    if (!phone && !email && !profile) missingParams.push('phone, email, or profile');
 
     if (missingParams.length > 0) {
       return res.status(400).json({
@@ -209,16 +228,19 @@ router.post('/setSubscriptionPaymentDate', async (req, res) => {
           date: '2025-12-31 23:59',
           phone: '+79001234567',
           // OR
-          email: 'user@example.com'
+          email: 'user@example.com',
+          // OR
+          profile: 'user_profile_id'
         }
       });
     }
 
     // Validate that only one identifier is provided
-    if (phone && email) {
+    const identifiersCount = [phone, email, profile].filter(Boolean).length;
+    if (identifiersCount > 1) {
       return res.status(400).json({
         success: false,
-        error: 'Provide either phone or email, not both'
+        error: 'Provide only one identifier: phone, email, or profile'
       });
     }
 
@@ -249,8 +271,20 @@ router.post('/setSubscriptionPaymentDate', async (req, res) => {
       subscription,
       date,
       phone,
-      email
+      email,
+      profile
     });
+
+    // Determine identifier type
+    let identifierType = 'phone';
+    let identifier = phone;
+    if (email) {
+      identifierType = 'email';
+      identifier = email;
+    } else if (profile) {
+      identifierType = 'profile';
+      identifier = profile;
+    }
 
     res.json({
       success: true,
@@ -259,8 +293,8 @@ router.post('/setSubscriptionPaymentDate', async (req, res) => {
       request: {
         subscription,
         newDate: date,
-        identifier: phone || email,
-        identifierType: phone ? 'phone' : 'email'
+        identifier: identifier,
+        identifierType: identifierType
       }
     });
 

@@ -98,8 +98,9 @@ class ProdamusService {
    * @param {string} config.prodamusUrl - Prodamus URL
    * @param {string} config.secretKey - Secret key
    * @param {string} config.subscription - Subscription ID
-   * @param {string} config.phone - Customer phone (optional if email provided)
-   * @param {string} config.email - Customer email (optional if phone provided)
+   * @param {string} config.phone - Customer phone (optional if email or profile provided)
+   * @param {string} config.email - Customer email (optional if phone or profile provided)
+   * @param {string} config.profile - Profile ID (optional if phone or email provided)
    * @param {boolean} config.isActive - true to activate, false to deactivate
    * @returns {Promise<Object>} - API response
    */
@@ -110,6 +111,7 @@ class ProdamusService {
       subscription,
       phone,
       email,
+      profile,
       isActive
     } = config;
 
@@ -119,13 +121,15 @@ class ProdamusService {
       active_user: isActive ? '1' : '0'
     };
 
-    // Add identifier (phone or email)
+    // Add identifier (phone, email, or profile)
     if (phone) {
       params.customer_phone = phone;
     } else if (email) {
       params.customer_email = email;
+    } else if (profile) {
+      params.profile = profile;
     } else {
-      throw new Error('Either phone or email must be provided');
+      throw new Error('Either phone, email, or profile must be provided');
     }
 
     return await this.makeRequest(prodamusUrl, 'setActivity', params, secretKey);
@@ -165,8 +169,9 @@ class ProdamusService {
    * @param {string} config.secretKey - Secret key
    * @param {string} config.subscription - Subscription ID
    * @param {string} config.date - New payment date in format "YYYY-MM-DD HH:MM"
-   * @param {string} config.phone - Customer phone (optional if email provided)
-   * @param {string} config.email - Customer email (optional if phone provided)
+   * @param {string} config.phone - Customer phone (optional if email or profile provided)
+   * @param {string} config.email - Customer email (optional if phone or profile provided)
+   * @param {string} config.profile - Profile ID (optional if phone or email provided)
    * @returns {Promise<Object>} - API response
    */
   async setSubscriptionPaymentDate(config) {
@@ -176,7 +181,8 @@ class ProdamusService {
       subscription,
       date,
       phone,
-      email
+      email,
+      profile
     } = config;
 
     // Build request parameters
@@ -192,8 +198,11 @@ class ProdamusService {
     } else if (email) {
       params.auth_type = 'customer_email';
       params.customer_email = email;
+    } else if (profile) {
+      params.auth_type = 'profile';
+      params.profile = profile;
     } else {
-      throw new Error('Either phone or email must be provided');
+      throw new Error('Either phone, email, or profile must be provided');
     }
 
     return await this.makeRequest(prodamusUrl, 'setSubscriptionPaymentDate', params, secretKey);

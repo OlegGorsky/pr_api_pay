@@ -92,6 +92,20 @@ curl -X POST http://localhost:3001/setSubscriptionPaymentDate \
   }'
 ```
 
+### Использование profile вместо phone/email
+
+```bash
+curl -X POST http://localhost:3001/setActivity \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prodamusUrl": "https://example.payform.ru",
+    "secretKey": "your_secret_key",
+    "subscription": "123456",
+    "profile": "user_profile_12345",
+    "isActive": false
+  }'
+```
+
 ## 4. Проверка здоровья сервера
 
 ```bash

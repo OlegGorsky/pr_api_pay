@@ -168,12 +168,13 @@ docker inspect --format='{{json .State.Health}}' prodamus-api-wrapper | jq
 
 ### Идентификаторы клиента
 
-Все endpoints, требующие идентификацию клиента, поддерживают два типа идентификаторов:
+Все endpoints, требующие идентификацию клиента, поддерживают три типа идентификаторов:
 
 - **`phone`** - Номер телефона в формате `+79001234567`
 - **`email`** - Email адрес клиента
+- **`profile`** - ID профиля клиента
 
-**Важно:** Передайте либо `phone`, либо `email`, но не оба одновременно.
+**Важно:** Передайте только один идентификатор: `phone`, `email` или `profile`.
 
 ---
 
@@ -192,9 +193,10 @@ docker inspect --format='{{json .State.Health}}' prodamus-api-wrapper | jq
 | `subscription` | string | Да | ID подписки |
 | `phone` | string | Нет* | Телефон клиента (формат: +79001234567) |
 | `email` | string | Нет* | Email клиента |
+| `profile` | string | Нет* | ID профиля клиента |
 | `isActive` | boolean | Да | `true` для активации, `false` для деактивации |
 
-\* Обязателен один из параметров: `phone` или `email`
+\* Обязателен один из параметров: `phone`, `email` или `profile`
 
 ### Пример запроса
 
@@ -220,6 +222,20 @@ curl -X POST http://localhost:3001/setActivity \
     "secretKey": "your_secret_key",
     "subscription": "123456",
     "email": "user@example.com",
+    "isActive": true
+  }'
+```
+
+С использованием profile:
+
+```bash
+curl -X POST http://localhost:3001/setActivity \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prodamusUrl": "https://example.payform.ru",
+    "secretKey": "your_secret_key",
+    "subscription": "123456",
+    "profile": "user_profile_12345",
     "isActive": true
   }'
 ```
@@ -336,8 +352,9 @@ curl -X POST http://localhost:3001/setSubscriptionDiscount \
 | `date` | string | Да | Дата следующего платежа (формат: `"YYYY-MM-DD HH:MM"`) |
 | `phone` | string | Нет* | Телефон клиента (формат: +79001234567) |
 | `email` | string | Нет* | Email клиента |
+| `profile` | string | Нет* | ID профиля клиента |
 
-\* Обязателен один из параметров: `phone` или `email`
+\* Обязателен один из параметров: `phone`, `email` или `profile`
 
 ### Важно
 
@@ -370,6 +387,20 @@ curl -X POST http://localhost:3001/setSubscriptionPaymentDate \
     "subscription": "123456",
     "date": "2025-12-31 23:59",
     "email": "user@example.com"
+  }'
+```
+
+С использованием profile:
+
+```bash
+curl -X POST http://localhost:3001/setSubscriptionPaymentDate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prodamusUrl": "https://example.payform.ru",
+    "secretKey": "your_secret_key",
+    "subscription": "123456",
+    "date": "2025-12-31 23:59",
+    "profile": "user_profile_12345"
   }'
 ```
 
